@@ -3,7 +3,7 @@ const app = express()
 const mysql = require('mysql')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-// const { v4: uuidv4 } = require('uuid')
+
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -29,7 +29,6 @@ app.post("/api/insert", (req, res) => {
         }else{
             console.log('students Add');
             console.log(result);
-            res.send('hello Artur')
         }
     
     })
@@ -46,21 +45,28 @@ app.get("/api/get", (req, res) => {
     })
 })
 
-// const sql = "SELECT * FROM users";
-// connection.query(sql, function (err, result) {
-//     if (err) {
-//         console.log('error' + err.message);
-//     }else{
-//         console.log(result);
-//     }
-// });
+app.delete("/api/delete/:idUs", (req, res) => {
+    const id = req.params.idUs
+    const sqlDelete = "DELETE FROM Artur.users WHERE id = ?"
 
+    connection.query(sqlDelete, id, function (err, result) {
+        if(err) {
+            console.log(err.message);
+        }
+    })
+})
 
+app.put("/api/update", (req, res) => {
+    const id = req.body.idUs
+    const curses = req.body.cursesUs
+    const sqlUpdate = "UPDATE Artur.users SET course = ? WHERE id = ?"
 
-// const sql = "DELETE FROM users WHERE id = 2";
-// connection.query(sql, function (err, result) {
-//   console.log(result);
-// });
+    connection.query(sqlUpdate, [curses, id], function (err, result) {
+        if(err) {
+            console.log(err.message);
+        }
+    })
+})
 
 
 app.listen(3006, () => {
